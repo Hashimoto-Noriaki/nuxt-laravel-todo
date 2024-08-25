@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TodoRequest;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 
 class TodosController extends Controller
 {
-    // -------- ここから追記 --------
     public function index()
     {
         $todos = Todo::all();
@@ -17,10 +17,7 @@ class TodosController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'user_id' => 'required|exists:users,id',
-        ]);
+        $validated = $request->validated(); // バリデーション済みのデータを取得
 
         $todo = Todo::create($validated);
 
@@ -33,13 +30,5 @@ class TodosController extends Controller
         $todo->delete();
 
         return response()->json(['message' => 'Todo deleted successfully']);
-    }
-
-    private function todoParams(Request $request)
-    {
-        return $request->validate([
-            'title' => 'required|string|max:255',
-            'user_id' => 'required|exists:users,id',
-        ]);
     }
 }
