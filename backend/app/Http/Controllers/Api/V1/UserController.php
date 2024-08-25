@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest; // ユーザーリクエストバリデーションを使用
+use App\Http\Requests\UserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -17,7 +17,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return response()->json($users);
+
+        // UserResourceを使用してレスポンスを整形
+        return response()->json(UserResource::collection($users));
     }
 
     /**
@@ -29,6 +31,8 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $user = User::create($request->validated());
-        return response()->json($user, 201);
+
+        // UserResourceを使用してレスポンスを整形
+        return response()->json(new UserResource($user), 201);
     }
 }
