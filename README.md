@@ -1,3 +1,9 @@
+### フロントエンド起動
+```
+npm run build
+npm run start
+```
+
 ### Laravelの新規アプリ作成
 サービス名backend
 ```
